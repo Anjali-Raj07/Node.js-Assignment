@@ -117,11 +117,20 @@ const addUserService = async (FirstName, MiddleName, LastName, Email, Password, 
 };
 const updateUserService = async (userId, updates) => {
     const { Password, ...userUpdates } = updates;
+    const user = await data.findById(userId);
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    const updateObject = {
+        ...userUpdates,
+        updatedTime: new Date()  
+    };
 
     const updatedUser = await data.findByIdAndUpdate(
         userId,
-        { ...userUpdates, updatedTime: new Date() }, 
-        { new: true }
+        updateObject,
+        { new: true }  
     );
 
     return updatedUser;

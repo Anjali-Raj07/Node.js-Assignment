@@ -12,7 +12,7 @@ const authMiddleware = (req, res, next) => {
         console.log('Decoded token:', decoded);
 
         req.user = {
-            userId: decoded.user.id,
+            id: decoded.user.id,
             Role: decoded.user.Role,
             FirstName: decoded.user.FirstName
         };

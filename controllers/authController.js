@@ -65,23 +65,13 @@ const addUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const userId = req.params.id;
-        const { FirstName, MiddleName, LastName, Email, Password, confirmPassword, Role, Department } = req.body;
-
+        const { FirstName, MiddleName, LastName, Email, Role, Department } = req.body;
 
         if (!FirstName || !LastName || !Email || !Role) {
-            return res.status(400).json({ message: 'Mandatory Fields should be filled!' });
+            return res.status(400).json({ message: 'Mandatory fields should be filled!' });
         }
 
-        if (Password && Password !== confirmPassword) {
-            return res.status(400).json({ message: 'Passwords do not match!' });
-        }
-
-        if (Password && (Password.length < 6 || Password.length > 12)) {
-            return res.status(400).json({ message: 'Password must be between 6 to 12 characters long!' });
-        }
-
-        let updatedFields = { FirstName, MiddleName, LastName, Email, Role, Department };
-       
+        const updatedFields = { FirstName, MiddleName, LastName, Email, Role, Department };
 
         const updatedUser = await updateUserService(userId, updatedFields);
 
@@ -95,6 +85,7 @@ const updateUser = async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
+
 const deleteUser = async (req, res) => {
     try {
         const userId = req.params.id;

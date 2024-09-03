@@ -5,17 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="/public/css/style.css">
-
 </head>
 <body>
     <div class="container">
         <h1>Admin Dashboard</h1>
         <p>Welcome, <%= user.FirstName %>!</p>
 
+        <a href="/updateUser/<%= loggedInUserId %>">
+            <button class="btn-update">My Profile</button>
+        </a>
+
         <a href="/addUser">
             <button class="btn-add">Add New User/Admin</button>
         </a>
-
 
         <!-- List of users -->
         <h2>List of Users</h2>
@@ -31,17 +33,19 @@
             </thead>
             <tbody>
                 <% users.forEach(user => { %>
-                    <tr>
-                        <td><%= user.FirstName %></td>
-                        <td><%= user.LastName %></td>
-                        <td><%= user.Email %></td>
-                        <td><%= user.Role %></td>
-                        <td>
-                            <a href="/updateUser/<%= user._id %>">
-                                <button class="btn-update">Update</button>
-                            </a>
-                        </td>
-                    </tr>
+                    <% if (user._id.toString() !== loggedInUserId.toString()) { %> 
+                        <tr>
+                            <td><%= user.FirstName %></td>
+                            <td><%= user.LastName %></td>
+                            <td><%= user.Email %></td>
+                            <td><%= user.Role %></td>
+                            <td>
+                                <a href="/updateUser/<%= user._id %>">
+                                    <button class="btn-update">Update</button>
+                                </a>
+                            </td>
+                        </tr>
+                    <% } %>
                 <% }) %>
             </tbody>
         </table>

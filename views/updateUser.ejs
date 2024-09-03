@@ -25,10 +25,11 @@
             <input type="email" name="Email" id="Email" value="<%= user.Email %>" required>
             
             <label for="Password">Password:</label>
-            <input type="password" name="Password" id="Password">
+            <input type="text" id="Password" value="********" readonly> 
+            <input type="hidden" name="Password" value="<%= user.Password %>"> 
             
             <label for="confirmPassword">Confirm Password:</label>
-            <input type="password" name="confirmPassword" id="confirmPassword">
+            <input type="text" id="confirmPassword" value="********" readonly> 
             
             <label for="Role">Role:</label>
             <input type="text" name="Role" id="Role" value="<%= user.Role %>" required>
@@ -39,10 +40,6 @@
             <button type="submit">Save Changes</button>
             <a href="/user/deleteUser/<%= user._id %>" onclick="return confirm('Are you sure you want to delete this user?')"><button type="button">Delete</button></a>
         </form>
-
-
-        
-       
     </main>
     <footer>
         <a href="/adminHome">Back to Admin Home</a>
