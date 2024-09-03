@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-
-const authMiddleware = (req, res, next) => {
+const adminMiddleware = (req, res, next) => {
     const token = req.cookies?.token; 
     if (!token) {
         console.error('No token provided');
@@ -18,11 +17,10 @@ const authMiddleware = (req, res, next) => {
             FirstName: decoded.user.FirstName
         };
 
-        if (req.user.Role === 'User') {
+        if (req.user.Role === 'Admin') {  
             next();  
-        } 
-         else {
-            return res.redirect('/login');
+        } else {
+            res.redirect('/login');
         }
     } catch (err) {
         console.error('Invalid token:', err.message);
@@ -30,4 +28,4 @@ const authMiddleware = (req, res, next) => {
     }
 };
 
-module.exports = authMiddleware;
+module.exports = adminMiddleware;

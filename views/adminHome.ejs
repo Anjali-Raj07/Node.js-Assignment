@@ -10,6 +10,7 @@
     <div class="container">
         <h1>Admin Dashboard</h1>
         <p>Welcome, <%= user.FirstName %>!</p>
+        <a type="button" id="logoutButton" class="btnStyle" href="/user/logout">Logout</a>
 
         <a href="/updateUser/<%= loggedInUserId %>">
             <button class="btn-update">My Profile</button>

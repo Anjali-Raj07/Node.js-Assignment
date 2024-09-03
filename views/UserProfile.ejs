@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update User</title>
+    <title>User Profile</title>
     <link rel="stylesheet" href="/styles.css"> 
 </head>
 <body>
     <header>
-        <h1><%= loginedUserid ? 'My Profile' : 'Update User' %></h1>
-
+        <h1>My Profile</h1>
     </header>
     <main>
-        <form action="/user/updateUser/<%= user._id %>" method="POST">
+        <form action="/user/userProfile/<%= user._id %>" method="POST">
             <label for="FirstName">First Name:</label>
             <input type="text" name="FirstName" id="FirstName" value="<%= user.FirstName %>" required>
             
@@ -43,7 +42,8 @@
         </form>
     </main>
     <footer>
-        <a href="<%= user.Role === 'Admin' ? '/adminHome' : '/userHome' %>">Back to Home</a>
+        <a href='/userHome' >">Back to Home</a>
+
     </footer>
 </body>
 </html>

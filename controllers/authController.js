@@ -1,4 +1,4 @@
-const {registerUserService,loginUserService,addUserService,updateUserService,deleteUserService} = require('../services/authService'); 
+const { registerUserService, loginUserService, addUserService, updateUserService, deleteUserService } = require('../services/authService');
 
 const registerUser = async (req, res) => {
     try {
@@ -29,12 +29,17 @@ const loginUser = async (req, res) => {
         const { accessToken, user } = await loginUserService(Email, Password);
 
         res.cookie('token', accessToken, { httpOnly: true });
+        console.log(user.Role)
 
         if (user.Role === 'Admin') {
             return res.redirect('/adminHome');
-        } else {
-            return res.redirect('/userHome');
+        } else if (user.Role === 'User')
+            return res.redirect(`/userHome`);
+        else {
+            return res.redirect('/login');
+
         }
+    
     } catch (error) {
         console.error('Login error:', error.message);
         return res.status(400).render('login', { message: error.message });
@@ -78,8 +83,13 @@ const updateUser = async (req, res) => {
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
+        if (Role === 'Admin') {
+            res.redirect('/adminHome');
 
-        res.redirect('/adminHome');  
+        }
+        else {
+         res.redirect('/UserHome');
+        }
     } catch (error) {
         console.error('Update user error:', error.message);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -99,6 +109,34 @@ const deleteUser = async (req, res) => {
     }
 };
 
+const updateProfile = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const { FirstName, MiddleName, LastName, Email, Role, Department } = req.body;
+
+        if (!FirstName || !LastName || !Email || !Role) {
+            return res.status(400).json({ message: 'Mandatory fields should be filled!' });
+        }
+
+        const updatedFields = { FirstName, MiddleName, LastName, Email, Role, Department };
+
+        const updatedUser = await updateUserService(userId, updatedFields);
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (Role === 'Admin') {
+            res.redirect('/adminHome');
+
+        }
+        else {
+         res.redirect('/UserHome');
+        }
+    } catch (error) {
+        console.error('Update user error:', error.message);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
 
 
-module.exports = { registerUser, loginUser,addUser, updateUser,deleteUser};
+module.exports = { registerUser, loginUser, addUser, updateUser, deleteUser,updateProfile };

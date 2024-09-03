@@ -140,6 +140,27 @@ const updateUserService = async (userId, updates) => {
 const deleteUserService = async (userId) => {
     await data.findByIdAndDelete(userId);
 };
+const UserProfileService = async (userId, updates) => {
+    const { Password, ...userUpdates } = updates;
+    const user = await data.findById(userId);
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    const updateObject = {
+        ...userUpdates,
+        updatedTime: new Date()  
+    };
+
+    const updatedUser = await data.findByIdAndUpdate(
+        userId,
+        updateObject,
+        { new: true }  
+    );
+
+    return updatedUser;
+};
 
 
-module.exports = { registerUserService, loginUserService ,addUserService,updateUserService,deleteUserService};
+
+module.exports = { registerUserService, loginUserService ,addUserService,updateUserService,deleteUserService,UserProfileService};
