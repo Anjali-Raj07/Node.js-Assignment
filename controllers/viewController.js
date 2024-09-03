@@ -27,13 +27,33 @@ const renderUserPage =(req,res)=>{
 }
 
 const renderAddUserPage=(req,res) =>{
-res.render('addUSer')
+res.render('addUser')
 }
+
+const renderUpdateUserPage = async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        const user = await data.findById(userId);
+
+        if (!user) {
+            return res.status(404).render('error', { message: 'User not found' });
+        }
+
+        res.render('updateUser', { user, message: null });
+    } catch (error) {
+        console.error('Error rendering update user page:', error.message);
+        res.status(500).render('error', { message: 'Internal Server Error' });
+    }
+};
+
+
 
 module.exports = {
     renderRegisterPage,
     renderLoginPage,
     renderAdminPage,
     renderUserPage,
-    renderAddUserPage
+    renderAddUserPage,
+    renderUpdateUserPage
 };

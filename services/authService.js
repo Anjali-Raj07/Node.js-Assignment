@@ -115,5 +115,22 @@ const addUserService = async (FirstName, MiddleName, LastName, Email, Password, 
 
     return newUser;
 };
+const updateUserService = async (userId, updates) => {
+    const { Password, ...userUpdates } = updates;
 
-module.exports = { registerUserService, loginUserService ,addUserService};
+    const updatedUser = await data.findByIdAndUpdate(
+        userId,
+        { ...userUpdates, updatedTime: new Date() }, 
+        { new: true }
+    );
+
+    return updatedUser;
+};
+
+
+const deleteUserService = async (userId) => {
+    await data.findByIdAndDelete(userId);
+};
+
+
+module.exports = { registerUserService, loginUserService ,addUserService,updateUserService,deleteUserService};

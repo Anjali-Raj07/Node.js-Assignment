@@ -1,4 +1,4 @@
-const {registerUserService,loginUserService,addUserService} = require('../services/authService'); 
+const {registerUserService,loginUserService,addUserService,updateUserService,deleteUserService} = require('../services/authService'); 
 
 const registerUser = async (req, res) => {
     try {
@@ -62,5 +62,52 @@ const addUser = async (req, res) => {
     }
 };
 
+const updateUser = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const { FirstName, MiddleName, LastName, Email, Password, confirmPassword, Role, Department } = req.body;
 
-module.exports = { registerUser, loginUser,addUser };
+
+        if (!FirstName || !LastName || !Email || !Role) {
+            return res.status(400).json({ message: 'Mandatory Fields should be filled!' });
+        }
+
+        if (Password && Password !== confirmPassword) {
+            return res.status(400).json({ message: 'Passwords do not match!' });
+        }
+
+        if (Password && (Password.length < 6 || Password.length > 12)) {
+            return res.status(400).json({ message: 'Password must be between 6 to 12 characters long!' });
+        }
+
+        let updatedFields = { FirstName, MiddleName, LastName, Email, Role, Department };
+       
+
+        const updatedUser = await updateUserService(userId, updatedFields);
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.redirect('/adminHome');  
+    } catch (error) {
+        console.error('Update user error:', error.message);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+const deleteUser = async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        await deleteUserService(userId);
+
+        res.redirect('/adminHome');
+    } catch (error) {
+        console.error('Delete user error:', error.message);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+
+
+module.exports = { registerUser, loginUser,addUser, updateUser,deleteUser};
