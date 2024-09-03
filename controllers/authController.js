@@ -1,4 +1,4 @@
-const {registerUserService,loginUserService} = require('../services/authService'); 
+const {registerUserService,loginUserService,addUserService} = require('../services/authService'); 
 
 const registerUser = async (req, res) => {
     try {
@@ -41,5 +41,26 @@ const loginUser = async (req, res) => {
     }
 };
 
+const addUser = async (req, res) => {
+    try {
+        const { FirstName, MiddleName, LastName, Email, Password, confirmPassword, Role, Department } = req.body;
 
-module.exports = { registerUser, loginUser };
+        const newUser = await addUserService(
+            FirstName,
+            MiddleName,
+            LastName,
+            Email,
+            Password,
+            confirmPassword,
+            Role,
+            Department
+        );
+
+        res.redirect('/adminHome');
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+
+module.exports = { registerUser, loginUser,addUser };

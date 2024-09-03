@@ -26,11 +26,14 @@ const renderUserPage =(req,res)=>{
     res.render('userHome')
 }
 
-
+const renderAddUserPage=(req,res) =>{
+res.render('addUSer')
+}
 
 module.exports = {
     renderRegisterPage,
     renderLoginPage,
     renderAdminPage,
-    renderUserPage
+    renderUserPage,
+    renderAddUserPage
 };

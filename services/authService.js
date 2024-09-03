@@ -79,5 +79,41 @@ const loginUserService = async (Email, Password) => {
         }
     };
 };
+const addUserService = async (FirstName, MiddleName, LastName, Email, Password, confirmPassword, Role, Department) => {
+    if (!FirstName || !LastName || !Email || !Password || !confirmPassword || !Role) {
+        throw new Error("Mandatory Fields should be filled!");
+    }
 
-module.exports = { registerUserService, loginUserService };
+    if (Password !== confirmPassword) {
+        throw new Error("Passwords do not match!");
+    }
+
+    if (Password.length < 6 || Password.length > 12) {
+        throw new Error("Password must be between 6 to 12 characters long!");
+    }
+
+    const userExists = await data.findOne({ Email });
+    if (userExists) {
+        throw new Error("User already exists");
+    }
+
+    const hashedPassword = await bcrypt.hash(Password, 10);
+    const currentTime = new Date(); 
+
+
+    const newUser = await data.create({
+        FirstName,
+        MiddleName,
+        LastName,
+        Email,
+        Password: hashedPassword,
+        Role,
+        Department,
+        createdTime: currentTime,  
+        updatedTime: currentTime  
+    });
+
+    return newUser;
+};
+
+module.exports = { registerUserService, loginUserService ,addUserService};

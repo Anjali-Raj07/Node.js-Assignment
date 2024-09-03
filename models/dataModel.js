@@ -52,6 +52,13 @@ const dataSchema = new mongoose.Schema({
 
 })
 
+dataSchema.pre('save', function(next) {
+    this.updatedTime = Date.now();
+    next();
+});
+
 const data = mongoose.model('data', dataSchema);
+
+
 
 module.exports = data;
