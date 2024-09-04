@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body> 
-        <div class="form-container">
+        <div class="form">
             <h2>Add New User/Admin</h2>
-            <form action="/user/addUserAdmin" method="POST">
+            <form class="addUserAdmin" action="/user/addUserAdmin" method="POST">
                 <label for="FirstName">First Name*</label>
                 <input type="text" id="FirstName" name="FirstName" required>
 
@@ -42,4 +44,6 @@
         </div>
 
 </body>
+<script src="js/script.js"></script>
+
 </html>

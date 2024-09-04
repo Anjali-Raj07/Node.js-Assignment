@@ -1,57 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="/css/style.css"> 
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
+
 <body>
-    <div class="container">
-        <h1>User Dashboard</h1>
-        <p>Welcome, <%= user.FirstName %>!</p>
-        <nav>
-            <a href="/addUser">
-                <button class="btn-add">Add New User</button>
-            </a>
-    
+    <section>
 
-            <a href="/userProfile/<%= loggedInUserId %>">
-                <button class="btn-update">My Profile</button>
-            </a>
-            <a type="button" id="logoutButton" class="btnStyle" href="/user/logout">Logout</a>
-        </nav>
-         <!-- List of users -->
-         <h2>List of Users</h2>
-         <table>
-             <thead>
-                 <tr>
-                     <th>First Name</th>
-                     <th>Last Name</th>
-                     <th>Email</th>
-                     <th>Role</th>
-                 </tr>
-             </thead>
-             <tbody>
-                 <% users.forEach(user => { %>
-                     <% if (user._id.toString() !== loggedInUserId.toString()) { %> 
-                         <tr>
-                             <td><%= user.FirstName %></td>
-                             <td><%= user.LastName %></td>
-                             <td><%= user.Email %></td>
-                             <td><%= user.Role %></td>
-                             
-                         </tr>
-                     <% } %>
-                 <% }) %>
-             </tbody>
-         </table>
-    </div>
+        <div class="homePage">
+            <header class="header">
+                <div class="container">
+                    <div class="headerFlex">
+                        <h1>User Dashboard</h1>
+                        <div class="headerButtons">
+                            <a href="/addUser">
+                                <button class="btnStyle">Add New User</button>
+                            </a>
 
+
+                            <a href="/userProfile/<%= loggedInUserId %>">
+                                <button class="btnStyle">My Profile</button>
+                            </a>
+                            <a type="button" id="logoutButton" class="btnStyle" href="/user/logout">Logout</a>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </header>
+
+          <h3> <p style="margin-left: 2%;">Welcome, <%= user.FirstName %>!</p></h3> 
+
+            <!-- List of users -->
+            <h2>List of Users</h2>
+            <table style="width: 95%; margin-left: 2%;">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(user=> { %>
+                        <% if (user._id.toString() !==loggedInUserId.toString()) { %>
+                            <tr>
+                                <td>
+                                    <%= user.FirstName %>
+                                </td>
+                                <td>
+                                    <%= user.LastName %>
+                                </td>
+                                <td>
+                                    <%= user.Email %>
+                                </td>
+                                <td>
+                                    <%= user.Role %>
+                                </td>
+
+                            </tr>
+                            <% } %>
+                                <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </section>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/script.js">
-      
+
+
     </script>
 
 </body>
+
 </html>

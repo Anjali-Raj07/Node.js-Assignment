@@ -9,9 +9,9 @@
 
 </head>
 <body>
-    <div class="container">
+    <div class="form">
         <h2>Register</h2>
-        <form action="/user/register" method="POST">
+        <form class="registerForm" action="/user/register" method="POST">
             <label for="FirstName">First Name*</label>
             <input type="text" id="FirstName" name="FirstName" required>
 
@@ -41,6 +41,8 @@
 
           
             <button type="submit">Register</button>
+            <p>Already have an account? <a href="/login">Login</a></p>
+
         </form>
     </div>
 </body>
