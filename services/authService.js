@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const data = require('../models/dataModel');
+const updatedData = require("../models/updatedDataModel")
 
 const registerUserService = async (FirstName, MiddleName, LastName, Email, Password, confirmPassword, Role, Department) => {
     if (!FirstName || !LastName || !Email || !Password || !confirmPassword || !Role) {
@@ -182,6 +183,11 @@ const updateUserService = async (userId, updates) => {
     
 };
 
+const userDataService = async(userId)=>{
+     const user = await data.findById(userId);
+     return user;
+}
+
 
 const deleteUserService = async (userId) => {
     await data.findByIdAndDelete(userId);
@@ -207,6 +213,63 @@ const UserProfileService = async (userId, updates) => {
     return updatedUser;
 };
 
+const updatedDataService = async(oldData,newData,userId)=>{
+  try {
+    console.log(newData,"test");
+    
+    const  newUpdatedData = new updatedData({
+        OldValue:oldData,
+        newValue:newData,
+        userId:userId,
+        userName:newData.FirstName
+    })
+    const response = await newUpdatedData.save()
+    console.log(response);
+    
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
+const getUpdatedData = async(Id)=>{
+   try {
+    const data = await updatedData.find({userId:Id})
+    return data
+   } catch (error) {
+    
+   }
+}
+
+const updateExistingData = async(oldData,newData,userId)=>{
+    try {
+        const response = await updatedData.updateOne(
+            { userId: userId },
+            {
+                $set: {
+                    OldValue: oldData,
+                    newValue: newData,
+                    userName: newData.FirstName
+                }
+            }
+        );
+
+       console.log(response, "updated exisiting data");
+       
+    } catch (error) {
+        
+    }
+}
 
 
-module.exports = { registerUserService, loginUserService ,addUserAdminService,addUserService,updateUserService,deleteUserService,UserProfileService};
+module.exports = { registerUserService, 
+    loginUserService ,
+    addUserAdminService,
+    addUserService,
+    updateUserService,
+    deleteUserService,
+    UserProfileService,
+    userDataService,
+    updatedDataService,
+    getUpdatedData,
+    updateExistingData};
