@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const adminMiddleware = (req, res, next) => {
     const token = req.cookies?.token; 
+
     if (!token) {
         console.error('No token provided');
         return res.status(401).redirect('/login');
@@ -11,11 +12,15 @@ const adminMiddleware = (req, res, next) => {
         const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         console.log('Decoded token:', decoded);
 
+        
         req.user = {
             id: decoded.user.id,
             Role: decoded.user.Role,
             FirstName: decoded.user.FirstName
         };
+
+
+
 
         if (req.user.Role === 'Admin') {  
             next();  

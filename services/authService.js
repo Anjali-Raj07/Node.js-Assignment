@@ -134,6 +134,7 @@ const updateUserService = async (userId, updates) => {
     );
 
     return updatedUser;
+    
 };
 
 

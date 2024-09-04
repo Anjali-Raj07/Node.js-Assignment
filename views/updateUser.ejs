@@ -8,8 +8,7 @@
 </head>
 <body>
     <header>
-        <h1><%= loginedUserid ? 'My Profile' : 'Update User' %></h1>
-
+<h2>Update Profile</h2>
     </header>
     <main>
         <form action="/user/updateUser/<%= user._id %>" method="POST">
@@ -43,7 +42,7 @@
         </form>
     </main>
     <footer>
-        <a href="<%= user.Role === 'Admin' ? '/adminHome' : '/userHome' %>">Back to Home</a>
+        <a href="/adminHome">Back to Home</a>
     </footer>
 </body>
 </html>

@@ -1,4 +1,9 @@
-const { registerUserService, loginUserService, addUserService, updateUserService, deleteUserService } = require('../services/authService');
+const { registerUserService,
+    loginUserService,
+    addUserService,
+    updateUserService,
+    deleteUserService,
+    UserProfileService } = require('../services/authService');
 
 const registerUser = async (req, res) => {
     try {
@@ -29,6 +34,7 @@ const loginUser = async (req, res) => {
         const { accessToken, user } = await loginUserService(Email, Password);
 
         res.cookie('token', accessToken, { httpOnly: true });
+
         console.log(user.Role)
 
         if (user.Role === 'Admin') {
@@ -39,7 +45,7 @@ const loginUser = async (req, res) => {
             return res.redirect('/login');
 
         }
-    
+
     } catch (error) {
         console.error('Login error:', error.message);
         return res.status(400).render('login', { message: error.message });
@@ -79,17 +85,14 @@ const updateUser = async (req, res) => {
         const updatedFields = { FirstName, MiddleName, LastName, Email, Role, Department };
 
         const updatedUser = await updateUserService(userId, updatedFields);
+        console.log("updatedUser:", updatedUser)
 
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
-        if (Role === 'Admin') {
-            res.redirect('/adminHome');
+        res.redirect('/adminHome');
 
-        }
-        else {
-         res.redirect('/UserHome');
-        }
+
     } catch (error) {
         console.error('Update user error:', error.message);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -117,21 +120,20 @@ const updateProfile = async (req, res) => {
         if (!FirstName || !LastName || !Email || !Role) {
             return res.status(400).json({ message: 'Mandatory fields should be filled!' });
         }
+        console.log('User ID:', userId);
+        console.log('Request Body:', req.body);
 
         const updatedFields = { FirstName, MiddleName, LastName, Email, Role, Department };
 
-        const updatedUser = await updateUserService(userId, updatedFields);
+        const updatedUser = await UserProfileService(userId, updatedFields);
 
+        console.log(updatedUser, 'hi')
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
-        if (Role === 'Admin') {
-            res.redirect('/adminHome');
+        res.redirect('/UserHome');
 
-        }
-        else {
-         res.redirect('/UserHome');
-        }
+
     } catch (error) {
         console.error('Update user error:', error.message);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -139,4 +141,4 @@ const updateProfile = async (req, res) => {
 };
 
 
-module.exports = { registerUser, loginUser, addUser, updateUser, deleteUser,updateProfile };
+module.exports = { registerUser, loginUser, addUser, updateUser, deleteUser, updateProfile };
