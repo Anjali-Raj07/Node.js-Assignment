@@ -5,9 +5,33 @@ const cookieParser = require('cookie-parser');
 
 const connectDB = require('./config/dbConnection.js');
 
+
 connectDB();
 const app = express();
+const PORT = process.env.PORT ;
+const server  = app.listen(PORT, () => {
+ console.log(`Server started at port: ${PORT}`);
+});
+const io = require("socket.io")(server,{
+    pingTimeout:60000,
+    cors:{
+        origin:"*"
+    }
+})
 
+io.on("connection",(socket)=>{
+    console.log("socket io connected"); 
+    
+    socket.on("login details",(userdata)=>{
+        console.log(userdata);
+        
+        socket.user = userdata;
+    })
+
+    socket.on("getuser details",()=>{
+        socket.emit("user details",socket.user)
+    })
+})
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
@@ -25,7 +49,5 @@ app.use('/', require('./routes/viewRoute.js'));
 
 
 
-const PORT = process.env.PORT ;
-app.listen(PORT, () => {
-    console.log(`Server started at port: ${PORT}`);
-});
+
+
