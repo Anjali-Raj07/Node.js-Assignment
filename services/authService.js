@@ -79,6 +79,44 @@ const loginUserService = async (Email, Password) => {
         }
     };
 };
+const addUserAdminService = async (FirstName, MiddleName, LastName, Email, Password, confirmPassword, Role, Department) => {
+    if (!FirstName || !LastName || !Email || !Password || !confirmPassword || !Role) {
+        throw new Error("Mandatory Fields should be filled!");
+    }
+
+    if (Password !== confirmPassword) {
+        throw new Error("Passwords do not match!");
+    }
+
+    if (Password.length < 6 || Password.length > 12) {
+        throw new Error("Password must be between 6 to 12 characters long!");
+    }
+
+    const userExists = await data.findOne({ Email });
+    if (userExists) {
+        throw new Error("User already exists");
+    }
+
+    const hashedPassword = await bcrypt.hash(Password, 10);
+    const currentTime = new Date(); 
+
+
+    const newUser = await data.create({
+        FirstName,
+        MiddleName,
+        LastName,
+        Email,
+        Password: hashedPassword,
+        Role,
+        Department,
+        createdTime: currentTime,  
+        updatedTime: currentTime  
+    });
+
+    return newUser;
+};
+
+
 const addUserService = async (FirstName, MiddleName, LastName, Email, Password, confirmPassword, Role, Department) => {
     if (!FirstName || !LastName || !Email || !Password || !confirmPassword || !Role) {
         throw new Error("Mandatory Fields should be filled!");
@@ -91,6 +129,13 @@ const addUserService = async (FirstName, MiddleName, LastName, Email, Password, 
     if (Password.length < 6 || Password.length > 12) {
         throw new Error("Password must be between 6 to 12 characters long!");
     }
+
+
+
+    if (Role === 'Admin') {
+        throw new Error("Cannot add Admin with User role.");
+    }
+
 
     const userExists = await data.findOne({ Email });
     if (userExists) {
@@ -164,4 +209,4 @@ const UserProfileService = async (userId, updates) => {
 
 
 
-module.exports = { registerUserService, loginUserService ,addUserService,updateUserService,deleteUserService,UserProfileService};
+module.exports = { registerUserService, loginUserService ,addUserAdminService,addUserService,updateUserService,deleteUserService,UserProfileService};

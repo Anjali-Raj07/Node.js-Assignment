@@ -31,14 +31,19 @@ const renderAdminPage = async (req, res) => {
 
 const renderUserPage = async (req, res) => {
     try {
-        const users = await data.find();
-
         const loggedInUserId = req.user.id;
-
+        
         const loggedInUser = await data.findById(loggedInUserId);
 
         if (!loggedInUser) {
             return res.status(404).render('error', { message: 'Logged-in user not found' });
+        }
+
+        let users;
+        if (loggedInUser.Role === 'Admin') {
+            users = await data.find();
+        } else {
+            users = await data.find({ Role: { $ne: 'Admin' } });
         }
 
         res.render('userHome', { user: loggedInUser, loggedInUserId, users });
@@ -47,8 +52,14 @@ const renderUserPage = async (req, res) => {
         res.status(500).render('error', { message: 'Internal Server Error' });
     }
 };
-const renderAddUserPage=(req,res) =>{
-res.render('addUser')
+
+const renderAddUserAdminPage=(req,res) =>{
+res.render('addUserAdmin')
+}
+
+const renderAddUserPage=(req,res)=>{
+    res.render('addUser')
+
 }
 
 const renderUpdateUserPage = async (req, res) => {
@@ -91,6 +102,7 @@ module.exports = {
     renderAdminPage,
     renderUserPage,
     renderAddUserPage,
+    renderAddUserAdminPage,
     renderUpdateUserPage,
     renderUserProfile
 };

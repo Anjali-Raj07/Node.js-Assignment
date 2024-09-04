@@ -1,5 +1,6 @@
 const { registerUserService,
     loginUserService,
+    addUserAdminService,
     addUserService,
     updateUserService,
     deleteUserService,
@@ -52,6 +53,27 @@ const loginUser = async (req, res) => {
     }
 };
 
+const addUserAdmin = async (req, res) => {
+    try {
+        const { FirstName, MiddleName, LastName, Email, Password, confirmPassword, Role, Department } = req.body;
+
+        const newUser = await addUserAdminService(
+            FirstName,
+            MiddleName,
+            LastName,
+            Email,
+            Password,
+            confirmPassword,
+            Role,
+            Department
+        );
+
+        res.redirect('/adminHome');
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
 const addUser = async (req, res) => {
     try {
         const { FirstName, MiddleName, LastName, Email, Password, confirmPassword, Role, Department } = req.body;
@@ -67,7 +89,7 @@ const addUser = async (req, res) => {
             Department
         );
 
-        res.redirect('/adminHome');
+        res.redirect('/userHome');
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -141,4 +163,4 @@ const updateProfile = async (req, res) => {
 };
 
 
-module.exports = { registerUser, loginUser, addUser, updateUser, deleteUser, updateProfile };
+module.exports = { registerUser, loginUser, addUserAdmin, updateUser, deleteUser, updateProfile ,addUser};

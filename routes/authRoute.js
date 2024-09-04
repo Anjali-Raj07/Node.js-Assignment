@@ -7,7 +7,8 @@ const admiMiddleware = require('../middleware/adminMiddleware')
 
 router.post('/register', authController.registerUser);
 router.post('/login', authController.loginUser);
-router.post('/addUser',admiMiddleware,authController.addUser);
+router.post('/addUserAdmin',admiMiddleware,authController.addUserAdmin);
+router.post('/addUser',authMiddleware,authController.addUser)
 router.post('/updateUser/:id',admiMiddleware,authController.updateUser);
 router.post('/userProfile/:id',authMiddleware,authController.updateProfile);
 

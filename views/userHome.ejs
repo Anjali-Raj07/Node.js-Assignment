@@ -11,6 +11,10 @@
         <h1>User Dashboard</h1>
         <p>Welcome, <%= user.FirstName %>!</p>
         <nav>
+            <a href="/addUser">
+                <button class="btn-add">Add New User</button>
+            </a>
+    
 
             <a href="/userProfile/<%= loggedInUserId %>">
                 <button class="btn-update">My Profile</button>
