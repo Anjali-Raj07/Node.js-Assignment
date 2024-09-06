@@ -22,7 +22,7 @@ const registerUserService = async (FirstName, MiddleName, LastName, Email, Passw
     }
 
     const hashedPassword = await bcrypt.hash(Password, 10);
-    const currentTime = new Date(); 
+    const currentTime = new Date();
 
 
     const newUser = await data.create({
@@ -33,8 +33,8 @@ const registerUserService = async (FirstName, MiddleName, LastName, Email, Passw
         Password: hashedPassword,
         Role,
         Department,
-        createdTime: currentTime,  
-        updatedTime: currentTime  
+        createdTime: currentTime,
+        updatedTime: currentTime
     });
 
     return newUser;
@@ -99,7 +99,7 @@ const addUserAdminService = async (FirstName, MiddleName, LastName, Email, Passw
     }
 
     const hashedPassword = await bcrypt.hash(Password, 10);
-    const currentTime = new Date(); 
+    const currentTime = new Date();
 
 
     const newUser = await data.create({
@@ -110,8 +110,8 @@ const addUserAdminService = async (FirstName, MiddleName, LastName, Email, Passw
         Password: hashedPassword,
         Role,
         Department,
-        createdTime: currentTime,  
-        updatedTime: currentTime  
+        createdTime: currentTime,
+        updatedTime: currentTime
     });
 
     return newUser;
@@ -144,7 +144,7 @@ const addUserService = async (FirstName, MiddleName, LastName, Email, Password, 
     }
 
     const hashedPassword = await bcrypt.hash(Password, 10);
-    const currentTime = new Date(); 
+    const currentTime = new Date();
 
 
     const newUser = await data.create({
@@ -155,8 +155,8 @@ const addUserService = async (FirstName, MiddleName, LastName, Email, Password, 
         Password: hashedPassword,
         Role,
         Department,
-        createdTime: currentTime,  
-        updatedTime: currentTime  
+        createdTime: currentTime,
+        updatedTime: currentTime
     });
 
     return newUser;
@@ -170,28 +170,34 @@ const updateUserService = async (userId, updates) => {
 
     const updateObject = {
         ...userUpdates,
-        updatedTime: new Date()  
+        updatedTime: new Date()
     };
 
     const updatedUser = await data.findByIdAndUpdate(
         userId,
         updateObject,
-        { new: true }  
+        { new: true }
     );
 
     return updatedUser;
-    
+
 };
-
-const userDataService = async(userId)=>{
-     const user = await data.findById(userId);
-     return user;
-}
-
-
 const deleteUserService = async (userId) => {
     await data.findByIdAndDelete(userId);
 };
+const userDataService = async (userId) => {
+    const user = await data.findById(userId);
+    return user;
+}
+
+const getUpdatedData = async (Id) => {
+    try {
+        const data = await updatedData.find({ userId: Id })
+        return data
+    } catch (error) {
+
+    }
+}
 const UserProfileService = async (userId, updates) => {
     const { Password, ...userUpdates } = updates;
     const user = await data.findById(userId);
@@ -201,47 +207,37 @@ const UserProfileService = async (userId, updates) => {
 
     const updateObject = {
         ...userUpdates,
-        updatedTime: new Date()  
+        updatedTime: new Date()
     };
 
     const updatedUser = await data.findByIdAndUpdate(
         userId,
         updateObject,
-        { new: true }  
+        { new: true }
     );
 
     return updatedUser;
 };
 
-const updatedDataService = async(oldData,newData,userId)=>{
-  try {
-    console.log(newData,"test");
-    
-    const  newUpdatedData = new updatedData({
-        OldValue:oldData,
-        newValue:newData,
-        userId:userId,
-        userName:newData.FirstName
-    })
-    const response = await newUpdatedData.save()
-    console.log(response);
-    
-  } catch (error) {
-    console.log(error);
-    
-  }
-}
+const updatedDataService = async (oldData, newData, userId) => {
+    try {
+        console.log(newData, "test");
 
-const getUpdatedData = async(Id)=>{
-   try {
-    const data = await updatedData.find({userId:Id})
-    return data
-   } catch (error) {
-    
-   }
-}
+        const newUpdatedData = new updatedData({
+            OldValue: oldData,
+            newValue: newData,
+            userId: userId,
+            userName: newData.FirstName
+        })
+        const response = await newUpdatedData.save()
+        console.log(response);
 
-const updateExistingData = async(oldData,newData,userId)=>{
+    } catch (error) {
+        console.log(error);
+
+    }
+}
+const updateExistingData = async (oldData, newData, userId) => {
     try {
         const response = await updatedData.updateOne(
             { userId: userId },
@@ -254,16 +250,18 @@ const updateExistingData = async(oldData,newData,userId)=>{
             }
         );
 
-       console.log(response, "updated exisiting data");
-       
+        console.log(response, "updated exisiting data");
+
     } catch (error) {
-        
+
     }
 }
 
 
-module.exports = { registerUserService, 
-    loginUserService ,
+
+module.exports = {
+    registerUserService,
+    loginUserService,
     addUserAdminService,
     addUserService,
     updateUserService,
@@ -272,4 +270,5 @@ module.exports = { registerUserService,
     userDataService,
     updatedDataService,
     getUpdatedData,
-    updateExistingData};
+    updateExistingData
+};

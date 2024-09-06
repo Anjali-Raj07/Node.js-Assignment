@@ -111,16 +111,16 @@ const updateUser = async (req, res) => {
         const updatedFields = { FirstName, MiddleName, LastName, Email, Role, Department };
 
         const oldData = await userDataService(userId)
-        console.log(oldData,"old Data");
-        
-        
+        console.log(oldData, "old Data");
+
+
         const existingData = await getUpdatedData(userId)
-          console.log(existingData.length,"existing");
-          
-        if(existingData.length){
-           const response  = await updateExistingData(oldData,updatedFields,userId) 
-        }else{
-            const response = await updatedDataService(oldData,updatedFields,userId)
+        console.log(existingData.length, "existing");
+
+        if (existingData.length) {
+            const response = await updateExistingData(oldData, updatedFields, userId)
+        } else {
+            const response = await updatedDataService(oldData, updatedFields, userId)
         }
 
         const updatedUser = await updateUserService(userId, updatedFields);
@@ -163,16 +163,16 @@ const updateProfile = async (req, res) => {
         const updatedFields = { FirstName, MiddleName, LastName, Email, Role, Department };
 
         const oldData = await userDataService(userId)
-        console.log(oldData,"old Data");
-        
-        
+        console.log(oldData, "old Data");
+
+
         const existingData = await getUpdatedData(userId)
-          console.log(existingData.length,"existing");
-          
-        if(existingData.length){
-           const response  = await updateExistingData(oldData,updatedFields,userId) 
-        }else{
-            const response = await updatedDataService(oldData,updatedFields,userId)
+        console.log(existingData.length, "existing");
+
+        if (existingData.length) {
+            const response = await updateExistingData(oldData, updatedFields, userId)
+        } else {
+            const response = await updatedDataService(oldData, updatedFields, userId)
         }
 
         const updatedUser = await UserProfileService(userId, updatedFields);
@@ -191,4 +191,12 @@ const updateProfile = async (req, res) => {
 };
 
 
-module.exports = { registerUser, loginUser, addUserAdmin, updateUser, deleteUser, updateProfile ,addUser};
+module.exports = {
+    registerUser,
+    loginUser,
+    addUserAdmin,
+    updateUser,
+    deleteUser,
+    updateProfile,
+    addUser
+};
